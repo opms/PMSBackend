@@ -22,7 +22,7 @@ note_schema = NoteSchema()
 
 @app.route('/users', methods=['GET', 'POST'])
 def handle_user():
-    # TODO: find out how to return all users in json, not just an individual one
+    # TODO: Create All the CRUD operations
     if request.method == 'GET':
         id = request.args.get('id')
         if id is None:
@@ -49,6 +49,7 @@ def create_user(name, email):
                         email=email,
                         created=dt.now(),
                         phone="+12312312313")  # Create an instance of the User class
+        # TODO: Create Note endpoint to remove below line
         examplenote = Note(content="this is a note")
         new_user.notes.append(examplenote)
         db.session.add(new_user)  # Adds new User record to database
