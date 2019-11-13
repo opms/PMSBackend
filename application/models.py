@@ -5,7 +5,7 @@ from . import db, ma
 class User(db.Model):
     """Model for user accounts."""
 
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     id = db.Column(db.Integer,
                    primary_key=True)
     name = db.Column(db.String(64),
@@ -24,9 +24,8 @@ class User(db.Model):
                       index=False,
                       unique=False,
                       nullable=True)
-    notes = db.relationship('Note',
-                            backref='user',
-                            lazy=True)
+    note = db.relationship("Note",
+                           back_populates="user")
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -35,7 +34,7 @@ class User(db.Model):
 class Note(db.Model):
     """Model for user accounts."""
 
-    __tablename__ = 'notes'
+    __tablename__ = 'note'
     id = db.Column(db.Integer,
                    primary_key=True)
     content = db.Column(db.Text,
@@ -43,5 +42,6 @@ class Note(db.Model):
                         unique=False,
                         nullable=False)
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.id'),
+                        db.ForeignKey('user.id'),
                         nullable=False)
+    user = db.relationship("User", back_populates="note")

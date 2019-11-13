@@ -4,15 +4,15 @@ from flask import current_app as app
 from .models import User, Note, db, ma
 
 
-class UserSchema(ma.ModelSchema):
-    class Meta:
-        model = User
-        include_fk = True
-
-
 class NoteSchema(ma.ModelSchema):
     class Meta:
         model = Note
+
+
+class UserSchema(ma.ModelSchema):
+    class Meta:
+        model = User
+    note = ma.Nested(NoteSchema, many=True)
 
 
 user_schema = UserSchema()
@@ -51,7 +51,7 @@ def create_user(name, email):
                         phone="+12312312313")  # Create an instance of the User class
         # TODO: Create Note endpoint to remove below line
         examplenote = Note(content="this is a note")
-        new_user.notes.append(examplenote)
+        new_user.note.append(examplenote)
         db.session.add(new_user)  # Adds new User record to database
         db.session.commit()  # Commits all changes
     return make_response(f"{new_user.name} successfully created!")
